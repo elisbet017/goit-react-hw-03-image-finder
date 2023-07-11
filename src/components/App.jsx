@@ -4,7 +4,6 @@ import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
 import Loader from './Loader';
-import Modal from './Modal';
 import { Wrap, Section } from './App.styled';
 // import PropTypes from 'prop-types'
 
@@ -15,7 +14,7 @@ import { Wrap, Section } from './App.styled';
 
 export class App extends Component {
   state = {
-    // status: 'IDLE',
+    status: 'idle',
     images: [],
     page: 1,
     isLoading: false,
@@ -62,12 +61,8 @@ export class App extends Component {
     }));
   };
 
-  onOpenModal = id => {
-    this.setState({ isModalOpen: true, modalImage: id })
-  }
-
   render() {
-    const { images, isLoading, isListShown, isModalOpen, modalImage } = this.state;
+    const { images, isLoading, isListShown, status } = this.state;
     return (
       <Section>
         <Wrap>
@@ -80,7 +75,6 @@ export class App extends Component {
           {isListShown && !isLoading && (
             <ImageGallery
               images={images}
-              onOpenModal={id => this.onOpenModal(id)}
             />
           )}
         </Wrap>
@@ -92,16 +86,12 @@ export class App extends Component {
             }}
           />
         )}
-        {isModalOpen && <Modal id={modalImage} />}
       </Section>
     );
   }
 }
-// id - унікальний ідентифікатор
-// webformatURL - посилання на маленьке зображення для списку карток
-// largeImageURL - посилання на велике зображення для модального вікна
 
-// галерея
+// модалка
 // пропси
 // машина стану
 // почистити

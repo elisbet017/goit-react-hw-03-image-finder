@@ -4,7 +4,7 @@ import { ImageGalleryList } from './ImageGallery.styled';
 // import PropTypes from 'prop-types'
 
 
-const ImageGallery = ({ images, onOpenModal }) => {
+const ImageGallery = ({ images }) => {
   return (
     <ImageGalleryList>
       {images.map(image => (
@@ -12,7 +12,6 @@ const ImageGallery = ({ images, onOpenModal }) => {
           key={image.id}
           image={image.webformatURL}
           largeImage={image.largeImageURL}
-          onOpenModal={onOpenModal}
         />
       ))}
     </ImageGalleryList>
