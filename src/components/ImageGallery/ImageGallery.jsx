@@ -11,6 +11,7 @@ const ImageGallery = ({ images, onOpenModal }) => {
         <ImageGalleryItem
           key={image.id}
           image={image.webformatURL}
+          largeImage={image.largeImageURL}
           onOpenModal={onOpenModal}
         />
       ))}

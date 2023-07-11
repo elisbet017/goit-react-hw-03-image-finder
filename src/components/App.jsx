@@ -22,6 +22,7 @@ export class App extends Component {
     isListShown: false,
     isModalOpen: false,
     value: '',
+    modalImage: null,
   };
 
   componentDidUpdate = async (_, prevState) => {
@@ -62,11 +63,11 @@ export class App extends Component {
   };
 
   onOpenModal = id => {
-    this.setState({isModalOpen: true})
+    this.setState({ isModalOpen: true, modalImage: id })
   }
 
   render() {
-    const { images, isLoading, isListShown, isModalOpen } = this.state;
+    const { images, isLoading, isListShown, isModalOpen, modalImage } = this.state;
     return (
       <Section>
         <Wrap>
@@ -77,7 +78,10 @@ export class App extends Component {
           />
           {isLoading && <Loader />}
           {isListShown && !isLoading && (
-            <ImageGallery images={images} onOpenModal={(id) => this.onOpenModal(id)} />
+            <ImageGallery
+              images={images}
+              onOpenModal={id => this.onOpenModal(id)}
+            />
           )}
         </Wrap>
         {isListShown && !isLoading && (
@@ -88,7 +92,7 @@ export class App extends Component {
             }}
           />
         )}
-        {isModalOpen && <Modal />}
+        {isModalOpen && <Modal id={modalImage} />}
       </Section>
     );
   }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Overlay, ModalBlock } from './Modal.styled';
 
-const Modal = ({path}) => {
+const Modal = ({id}) => {
   return (
     <Overlay>
       <ModalBlock>
-        <img src={path} alt="" />
+        <img src={id} alt="" />
       </ModalBlock>
     </Overlay>
   );
