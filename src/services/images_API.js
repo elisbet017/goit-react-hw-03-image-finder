@@ -8,6 +8,8 @@ export default async function getImages(value, page) {
       `?q=${value}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
     );
     return responce;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 };
 
