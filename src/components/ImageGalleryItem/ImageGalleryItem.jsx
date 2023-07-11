@@ -1,9 +1,10 @@
 import React from 'react'
 import { Item, Image } from './ImageGalleryItem.styled';
+// import PropTypes from 'prop-types'
 
-const ImageGalleryItem = ({ image }) => {
+const ImageGalleryItem = ({ image, onOpenModal }) => {
   return (
-    <Item className="gallery-item">
+    <Item onClick={() => onOpenModal(image.id)}>
       <Image src={image} alt="" />
     </Item>
   );
