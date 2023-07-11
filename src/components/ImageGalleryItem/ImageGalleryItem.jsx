@@ -6,41 +6,36 @@ import { Item, Image } from './ImageGalleryItem.styled';
 class ImageGalleryItem extends Component {
   state = {
     largeImageURL: null,
-    isModalOpen: false,
+    isModalOpened: false,
   };
 
-  onOpenModal = image => {
-    this.setState({ isModalOpen: true, largeImageURL: image });
+  onToggleModal = image => {
+    this.setState(({ isModalOpened }) => ({
+      isModalOpened: !isModalOpened,
+      largeImageURL: image,
+    }));
   };
 
   render() {
-    const { isModalOpen, largeImageURL } = this.state;
+    const { isModalOpened, largeImageURL } = this.state;
     const { image, largeImage } = this.props;
     return (
       <>
         <Item
           onClick={() => {
-            this.onOpenModal(largeImage);
+            this.onToggleModal(largeImage);
           }}
         >
           <Image src={image} alt="" />
         </Item>
-        {isModalOpen && <Modal image={largeImageURL} />}
+        {isModalOpened && (
+          <Modal>
+            <img src={largeImageURL} alt="" />
+          </Modal>
+        )}
       </>
     );
   }
 }
-
-// const ImageGalleryItem = ({ image, onOpenModal, largeImage }) => {
-//   return (
-// <Item
-//   onClick={() => {
-//     onOpenModal(largeImage);
-//   }}
-// >
-//   <Image src={image} alt="" />
-// </Item>
-//   );
-// };
 
 export default ImageGalleryItem;

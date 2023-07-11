@@ -7,48 +7,35 @@ import Loader from './Loader';
 import { Wrap, Section } from './App.styled';
 // import PropTypes from 'prop-types'
 
-// const Status = {
-//   IDLE: 'idle',
-
-// }
-
 export class App extends Component {
   state = {
     status: 'idle',
     images: [],
     page: 1,
-    isLoading: false,
-    isListShown: false,
-    isModalOpen: false,
     value: '',
-    modalImage: null,
   };
 
   componentDidUpdate = async (_, prevState) => {
-    const { value, page} = this.state;
+    const { value, page } = this.state;
 
-    if (
-      (prevState.value !== value) ||
-      (prevState.page !== page)
-    ) {
+    if (prevState.value !== value || prevState.page !== page) {
       try {
         const responce = await getImages(value, page);
 
-        this.setState(prevState => ({
-          images: [...prevState.images, ...responce.data.hits],
-          isListShown: true,
+        this.setState(({images}) => ({
+          images: [...images, ...responce.data.hits],
+          status: 'resolved',
         }));
       } catch (error) {
+        this.setState({ status: 'rejected' });
         console.log(error.message);
-      } finally {
-        this.setState({ isLoading: false });
       }
     }
   };
 
   handleSubmit = value => {
     this.setState({
-      isLoading: true,
+      status: 'pending',
       value,
       page: 1,
       images: [],
@@ -56,13 +43,13 @@ export class App extends Component {
   };
 
   onLoadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
+    this.setState(({page}) => ({
+      page: page + 1,
     }));
   };
 
   render() {
-    const { images, isLoading, isListShown, status } = this.state;
+    const { images, status } = this.state;
     return (
       <Section>
         <Wrap>
@@ -71,14 +58,10 @@ export class App extends Component {
               this.handleSubmit(value);
             }}
           />
-          {isLoading && <Loader />}
-          {isListShown && !isLoading && (
-            <ImageGallery
-              images={images}
-            />
-          )}
+          {status === 'pending' && <Loader />}
+          {status === 'resolved' && <ImageGallery images={images} />}
         </Wrap>
-        {isListShown && !isLoading && (
+        {status === 'resolved' && (
           <Button
             text="Load more"
             onLoadMore={value => {
@@ -93,7 +76,6 @@ export class App extends Component {
 
 // модалка
 // пропси
-// машина стану
 // почистити
-// кнопка лоад дізейблд коли натиснули
+// кнопка лоад дізейблд коли натиснули і додати лоадер під галерею
 // прибрати yup

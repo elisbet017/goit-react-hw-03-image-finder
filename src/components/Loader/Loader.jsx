@@ -1,5 +1,4 @@
 import React from 'react';
-// import {LoadCircle} from './Loader.styled';
 import { Circles } from 'react-loader-spinner';
 
 const Loader = () => {
@@ -20,6 +19,5 @@ const Loader = () => {
     />
   );
 };
-
 
 export default Loader;
