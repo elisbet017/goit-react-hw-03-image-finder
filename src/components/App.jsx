@@ -4,7 +4,7 @@ import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
 import Loader from './Loader';
-import imagesMapper from './helpers/imagesMapper';
+import imagesMapper from '../helpers/imagesMapper';
 import { Wrap, Section, Utils, Text } from './App.styled';
 
 export class App extends Component {
@@ -16,14 +16,14 @@ export class App extends Component {
   };
 
   componentDidUpdate = async (_, prevState) => {
-    const { value, page, status } = this.state;
+    const { value, page} = this.state;
 
     if (
       prevState.value !== value ||
-      prevState.page !== page ||
-      status === 'pending'
+      prevState.page !== page
     ) {
       try {
+        this.setState({ status: 'pending' });
         const responce = await getImages(value, page);
 
         this.setState(({ images }) => ({
@@ -39,7 +39,6 @@ export class App extends Component {
 
   handleSubmit = value => {
     this.setState({
-      status: 'pending',
       value,
       page: 1,
       images: [],
@@ -49,12 +48,11 @@ export class App extends Component {
   onLoadMore = () => {
     this.setState(({ page }) => ({
       page: page + 1,
-      status: 'load-more-pending',
     }));
   };
 
   render() {
-    const { images, status } = this.state;
+    const { images, status, page } = this.state;
     return (
       <Section>
         <Wrap>
@@ -64,7 +62,7 @@ export class App extends Component {
             }}
           />
           {status === 'pending' && <Loader />}
-          {(status === 'resolved' || status === 'load-more-pending') && (
+          {(status === 'resolved' || status === 'pending') && (
             <ImageGallery images={images} />
           )}
         </Wrap>
@@ -72,7 +70,7 @@ export class App extends Component {
           <Text>We are sorry, but we couldn't find anything.</Text>
         )}
         <Utils>
-          {status === 'load-more-pending' && <Loader />}
+          {status === 'pending'  && page !== 1 && <Loader />}
           {status === 'resolved' && images.length !== 0 && (
             <Button
               text="Load more"
